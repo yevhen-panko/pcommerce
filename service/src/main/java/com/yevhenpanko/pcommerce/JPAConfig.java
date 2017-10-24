@@ -4,6 +4,7 @@ package com.yevhenpanko.pcommerce;
 
 //import java.util.Properties;
 
+//@see https://www.thomasvitale.com/spring-data-jpa-hibernate-java-configuration/
 //@Configuration
 //@EnableTransactionManagement
 //@EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
