@@ -35,6 +35,8 @@
 
     <modules>
         <module>model</module>
+        <module>service</module>
+        <module>test</module>
     </modules>
 
 </project>
