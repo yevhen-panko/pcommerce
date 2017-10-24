@@ -1,64 +1,84 @@
 package com.yevhenpanko.pcommerce;
 
-//import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//import java.util.Properties;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
 
-//@see https://www.thomasvitale.com/spring-data-jpa-hibernate-java-configuration/
-//@Configuration
-//@EnableTransactionManagement
-//@EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
-//@PropertySource("classpath:jpa.properties")
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
+@PropertySource("classpath:jpa.properties")
 public class JPAConfig {
+    private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    private static final String HIBERNATE_DIALECT = "hibernate.dialect";
+    private static final String HIBERNATE_CURRENT_SESSION_CONTEXT_CLASS = "hibernate" +
+            ".current_session_context_class";
 
-//    @Autowired
-//    private Environment env;
+    @Autowired
+    private Environment env;
 
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.MYSQL);
+        vendorAdapter.setGenerateDdl(true);
 
-//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//        vendorAdapter.setDatabase(Database.POSTGRESQL);
-//        vendorAdapter.setGenerateDdl(true);
+        final LocalContainerEntityManagerFactoryBean em =
+                new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan("com.yevhenpanko.pcommerce.entity");
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(getAdditionalProperties());
 
-//        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-//        em.setDataSource(dataSource());
-//        em.setPackagesToScan("com.thomasvitale.model");
-//        em.setJpaVendorAdapter(vendorAdapter);
-//        em.setJpaProperties(additionalProperties());
+        return em;
+    }
 
-//        return em;
-//    }
+    @Bean
+    public DataSource dataSource() {
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driver_class"));
+        dataSource.setUrl(env.getProperty("hibernate.connection.url"));
+        dataSource.setUsername(env.getProperty("hibernate.connection.username"));
+        dataSource.setPassword(env.getProperty("hibernate.connection.password"));
 
-//    @Bean
-//    public DataSource dataSource(){
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driver_class"));
-//        dataSource.setUrl(env.getProperty("hibernate.connection.url"));
-//        dataSource.setUsername(env.getProperty("hibernate.connection.username"));
-//        dataSource.setPassword(env.getProperty("hibernate.connection.password"));
-//        return dataSource;
-//    }
+        return dataSource;
+    }
 
-//    @Bean
-//    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(emf);
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
 
-//        return transactionManager;
-//    }
+        return transactionManager;
+    }
 
-//    @Bean
-//    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
-//        return new PersistenceExceptionTranslationPostProcessor();
-//    }
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
 
-//    private Properties additionalProperties() {
-//        Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-//        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-//        properties.setProperty("hibernate.current_session_context_class", env.getProperty("hibernate.current_session_context_class"));
+    private Properties getAdditionalProperties() {
+        final Properties properties = new Properties();
+        properties.setProperty(HIBERNATE_HBM2DDL_AUTO, env.getProperty(HIBERNATE_HBM2DDL_AUTO));
+        properties.setProperty(HIBERNATE_DIALECT, env.getProperty(HIBERNATE_DIALECT));
+        properties.setProperty(HIBERNATE_CURRENT_SESSION_CONTEXT_CLASS,
+                env.getProperty(HIBERNATE_CURRENT_SESSION_CONTEXT_CLASS));
 
-//        return properties;
-//    }
+        return properties;
+    }
 }

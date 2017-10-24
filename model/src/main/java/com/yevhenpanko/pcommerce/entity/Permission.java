@@ -1,4 +1,4 @@
-package com.yevhenpanko.pcommerce.model;
+package com.yevhenpanko.pcommerce.entity;
 
 public enum Permission {
     CREATE_USER_ROLE,

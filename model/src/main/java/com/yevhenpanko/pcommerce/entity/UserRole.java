@@ -1,4 +1,4 @@
-package com.yevhenpanko.pcommerce.model;
+package com.yevhenpanko.pcommerce.entity;
 
 import javax.persistence.*;
 import java.util.List;
