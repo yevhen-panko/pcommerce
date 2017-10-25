@@ -1,10 +1,21 @@
 package com.yevhenpanko.pcommerce.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
 @Table(name = "USER")
-public class User extends AbstractEntity {
+public class User {
+    private static final String INCREMENT = "increment";
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY, generator = INCREMENT)
+    @GenericGenerator(name = INCREMENT, strategy = INCREMENT)
+    @Column(name = "ID", nullable = false)
+    private long id;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
@@ -18,9 +29,51 @@ public class User extends AbstractEntity {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "ROLE", nullable = false)
-    private UserRole role;
-
     public User() {
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

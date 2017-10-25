@@ -21,6 +21,7 @@
 
         <!--JPA-->
         <hibernate.jpa.api.version>1.0.0.Final</hibernate.jpa.api.version>
+        <mysql.connector.java.version>6.0.6</mysql.connector.java.version>
 
         <!--apache-->
         <apache.commons.lang.version>3.6</apache.commons.lang.version>
@@ -30,6 +31,9 @@
 
         <!--logging-->
         <log4j.version>2.9.1</log4j.version>
+
+        <!--test-->
+        <testng.version>6.11</testng.version>
     </properties>
 
     <modules>

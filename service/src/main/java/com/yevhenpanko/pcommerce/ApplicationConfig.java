@@ -2,6 +2,7 @@ package com.yevhenpanko.pcommerce;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -22,8 +23,9 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
-@PropertySource("classpath:jpa.properties")
-public class JPAConfig {
+@ComponentScan("com.yevhenpanko.pcommerce.entity")
+@PropertySource("file:${user.home}/jpa.properties")
+public class ApplicationConfig {
     private static final String HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String HIBERNATE_CURRENT_SESSION_CONTEXT_CLASS = "hibernate" +
@@ -40,7 +42,7 @@ public class JPAConfig {
 
         final LocalContainerEntityManagerFactoryBean em =
                 new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
+        em.setDataSource(getDataSource());
         em.setPackagesToScan("com.yevhenpanko.pcommerce.entity");
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getAdditionalProperties());
@@ -49,9 +51,8 @@ public class JPAConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("hibernate.connection.driver_class"));
         dataSource.setUrl(env.getProperty("hibernate.connection.url"));
         dataSource.setUsername(env.getProperty("hibernate.connection.username"));
         dataSource.setPassword(env.getProperty("hibernate.connection.password"));
