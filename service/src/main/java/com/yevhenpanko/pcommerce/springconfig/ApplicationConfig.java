@@ -9,6 +9,7 @@ import static org.springframework.orm.jpa.vendor.Database.MYSQL;
 
 @PropertySource("file:${user.home}/jpa.properties")
 public class ApplicationConfig extends AbstractApplicationConfig {
+    private static final String EMPTY_STRING = "";
 
     @Autowired
     private Environment env;
@@ -21,5 +22,10 @@ public class ApplicationConfig extends AbstractApplicationConfig {
     @Override
     protected Environment getEnvironment() {
         return env;
+    }
+
+    @Override
+    protected String getDriverClass() {
+        return EMPTY_STRING;
     }
 }

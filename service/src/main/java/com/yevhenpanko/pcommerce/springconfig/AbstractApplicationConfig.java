@@ -21,12 +21,11 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
-@ComponentScan("com.yevhenpanko.pcommerce.entity")
+@ComponentScan("com.yevhenpanko.pcommerce")
 public abstract class AbstractApplicationConfig {
     private static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String DIALECT = "hibernate.dialect";
     private static final String SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
-    private static final String DRIVER_CLASS = "hibernate.connection.driver_class";
     private static final String CONNECTION_URL = "hibernate.connection.url";
     private static final String USERNAME = "hibernate.connection.username";
     private static final String PASSWORD = "hibernate.connection.password";
@@ -37,6 +36,8 @@ public abstract class AbstractApplicationConfig {
 
     protected abstract Environment getEnvironment();
 
+    protected abstract String getDriverClass();
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -46,7 +47,7 @@ public abstract class AbstractApplicationConfig {
         final LocalContainerEntityManagerFactoryBean em =
                 new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
-        em.setPackagesToScan("com.yevhenpanko.pcommerce.entity");
+        em.setPackagesToScan("com.yevhenpanko.pcommerce");
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getAdditionalProperties());
 
@@ -58,7 +59,7 @@ public abstract class AbstractApplicationConfig {
         final Environment env = getEnvironment();
 
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty(DRIVER_CLASS));
+        dataSource.setDriverClassName(getDriverClass());
         dataSource.setUrl(env.getProperty(CONNECTION_URL));
         dataSource.setUsername(env.getProperty(USERNAME));
         dataSource.setPassword(env.getProperty(PASSWORD));
@@ -79,7 +80,7 @@ public abstract class AbstractApplicationConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    protected Properties getAdditionalProperties() {
+    private Properties getAdditionalProperties() {
         final Environment env = getEnvironment();
 
         final Properties properties = new Properties();

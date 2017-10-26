@@ -10,6 +10,7 @@ import static org.springframework.orm.jpa.vendor.Database.H2;
 
 @PropertySource("classpath:/jpa.properties")
 public class TestConfig extends AbstractApplicationConfig {
+    private static final String DRIVER_CLASS = "hibernate.connection.driver_class";
 
     @Autowired
     private Environment env;
@@ -22,5 +23,10 @@ public class TestConfig extends AbstractApplicationConfig {
     @Override
     protected Environment getEnvironment() {
         return env;
+    }
+
+    @Override
+    protected String getDriverClass() {
+        return env.getProperty(DRIVER_CLASS);
     }
 }
