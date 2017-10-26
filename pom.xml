@@ -34,6 +34,7 @@
 
         <!--test-->
         <testng.version>6.11</testng.version>
+        <h2.version>1.4.196</h2.version>
 
         <!--compilation-->
         <java.version>1.8</java.version>
