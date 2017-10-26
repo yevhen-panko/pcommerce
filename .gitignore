@@ -24,3 +24,8 @@ hs_err_pid*
 #IDE project files
 *.idea
 *.iml
+
+model/target/
+service/target/
+test/target/
+test/testDB/
