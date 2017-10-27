@@ -7,6 +7,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "USER_ROLE")
@@ -19,7 +20,7 @@ public class UserRole extends AbstractEntity {
     private String description;
 
     @Column(name = "PERMISSION", nullable = false)
-    @ElementCollection(targetClass = Permission.class)
+    @ElementCollection(targetClass = Permission.class, fetch = EAGER)
     @Enumerated(STRING)
     private List<Permission> permissions;
 

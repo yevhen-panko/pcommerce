@@ -3,7 +3,7 @@ package com.yevhenpanko.pcommerce.test;
 import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import com.yevhenpanko.pcommerce.repository.UserRepository;
-import com.yevhenpanko.pcommerce.service.UserManagement;
+import com.yevhenpanko.pcommerce.service.DefaultUserManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserManagementTest extends AbstractTest {
     private static final Logger LOGGER = LogManager.getLogger(UserManagementTest.class);
 
     @Autowired
-    private UserManagement userManagement;
+    private DefaultUserManagement userManagement;
 
     @Autowired
     private UserRepository userRepository;
@@ -27,7 +27,7 @@ public class UserManagementTest extends AbstractTest {
     @Test
     public void testCreatingUserWithSimpleRole() {
         final UserRole userRole = new UserRole("test", READ_PERMISSIONS);
-        long userId = userManagement.createUser("demo@mail.com", "password", userRole);
+        long userId = userManagement.create("demo@mail.com", "password", userRole);
 
         final Optional<User> user = userRepository.findById(userId);
         assertTrue(user.isPresent());
