@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.yevhenpanko.pcommerce.entity.user.Permission.DELETE_USER;
+
 @Service
 public class DefaultUserManagement implements UserManagement {
 
@@ -23,6 +25,9 @@ public class DefaultUserManagement implements UserManagement {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
 
     @Override
     public Optional<UserShortDTO> readById(long id) {
@@ -74,8 +79,10 @@ public class DefaultUserManagement implements UserManagement {
     }
 
     @Override
-    public void deleteById(long userId) {
-        final Optional<UserShortDTO> user = readById(userId);
-        user.ifPresent(u -> userRepository.deleteById(u.getId()));
+    public void deleteById(long actorId, long userId) {
+        if (permissionChecker.checkIfUserHasPermission(actorId, DELETE_USER)) {
+            final Optional<UserShortDTO> user = readById(userId);
+            user.ifPresent(u -> userRepository.deleteById(u.getId()));
+        }
     }
 }

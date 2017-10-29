@@ -1,6 +1,8 @@
 package com.yevhenpanko.pcommerce.test;
 
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
+import com.yevhenpanko.pcommerce.repository.UserRepository;
+import com.yevhenpanko.pcommerce.repository.UserRoleRepository;
 import com.yevhenpanko.pcommerce.service.PermissionChecker;
 import com.yevhenpanko.pcommerce.service.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ public class PermissionCheckerTest extends AbstractTest {
     private UserManagement userManagement;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
     private PermissionChecker permissionChecker;
 
     @BeforeClass
@@ -31,7 +39,8 @@ public class PermissionCheckerTest extends AbstractTest {
 
     @AfterClass
     private void cleanUp() {
-        userManagement.deleteById(userId);
+        userRepository.deleteAll();
+        userRoleRepository.deleteAll();
     }
 
     @Test

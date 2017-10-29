@@ -13,5 +13,11 @@ public interface UserManagement {
 
     long create(String email, String password, String firstName, String lastName, UserRole role);
 
-    void deleteById(long userId);
+    /**
+     * Deletes user if user has permissions to delete users.
+     *
+     * @param actorId - id of user who tries to do action
+     * @param userId  - id of user to delete
+     */
+    void deleteById(long actorId, long userId);
 }
