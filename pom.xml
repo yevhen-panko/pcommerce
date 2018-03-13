@@ -57,9 +57,9 @@
     </repositories>
 
     <modules>
-        <module>model</module>
-        <module>service</module>
-        <module>test</module>
+        <module>main-application</module>
+        <module>user-management-application</module>
+        <module>stock-management-application</module>
     </modules>
 
     <build>
