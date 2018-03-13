@@ -3,10 +3,12 @@ package com.yevhenpanko.pcommerce.test;
 import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import com.yevhenpanko.pcommerce.repository.UserRepository;
+import com.yevhenpanko.pcommerce.repository.UserRoleRepository;
 import com.yevhenpanko.pcommerce.service.DefaultUserManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.util.Optional;
@@ -24,6 +26,15 @@ public class UserManagementTest extends AbstractTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @AfterClass
+    private void cleanUp() {
+        userRepository.deleteAll();
+        userRoleRepository.deleteAll();
+    }
+
     @Test
     public void testCreatingUserWithSimpleRole() {
         final UserRole userRole = new UserRole(getUniqueName("test"), READ_PERMISSIONS);
@@ -34,8 +45,5 @@ public class UserManagementTest extends AbstractTest {
 
         final UserRole role = user.get().getRole();
         assertNotNull(role);
-
-        userManagement.deleteById(userId);
     }
-
 }
