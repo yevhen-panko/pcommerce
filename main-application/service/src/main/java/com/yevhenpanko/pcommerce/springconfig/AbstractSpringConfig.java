@@ -20,10 +20,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static com.yevhenpanko.pcommerce.springconfig.AbstractSpringConfig.PACKAGE_TO_SCAN;
+
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
-@ComponentScan("com.yevhenpanko.pcommerce")
+@EnableJpaRepositories(basePackages = PACKAGE_TO_SCAN + ".repository")
+@ComponentScan(PACKAGE_TO_SCAN)
 public abstract class AbstractSpringConfig {
     private static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String DIALECT = "hibernate.dialect";
@@ -34,6 +36,7 @@ public abstract class AbstractSpringConfig {
     private static final String SHOW_SQL = "hibernate.show_sql";
     private static final String FORMAT_SQL = "hibernate.format_sql";
     protected static final String DRIVER_CLASS = "hibernate.connection.driver_class";
+    protected static final String PACKAGE_TO_SCAN = "com.yevhenpanko.pcommerce";
 
     protected abstract Database getDataBase();
 
@@ -50,7 +53,7 @@ public abstract class AbstractSpringConfig {
         final LocalContainerEntityManagerFactoryBean em =
                 new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
-        em.setPackagesToScan("com.yevhenpanko.pcommerce");
+        em.setPackagesToScan(PACKAGE_TO_SCAN);
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getAdditionalProperties());
 

@@ -42,6 +42,7 @@
         <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
 
         <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
+        <jackson-databind.version>2.9.4</jackson-databind.version>
     </properties>
 
     <repositories>
