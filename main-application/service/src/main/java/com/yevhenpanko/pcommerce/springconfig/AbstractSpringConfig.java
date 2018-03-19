@@ -24,7 +24,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.yevhenpanko.pcommerce.repository")
 @ComponentScan("com.yevhenpanko.pcommerce")
-public abstract class AbstractApplicationConfig {
+public abstract class AbstractSpringConfig {
     private static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String DIALECT = "hibernate.dialect";
     private static final String SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
@@ -33,6 +33,7 @@ public abstract class AbstractApplicationConfig {
     private static final String PASSWORD = "hibernate.connection.password";
     private static final String SHOW_SQL = "hibernate.show_sql";
     private static final String FORMAT_SQL = "hibernate.format_sql";
+    protected static final String DRIVER_CLASS = "hibernate.connection.driver_class";
 
     protected abstract Database getDataBase();
 
