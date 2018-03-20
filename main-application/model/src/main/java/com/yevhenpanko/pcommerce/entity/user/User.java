@@ -34,6 +34,26 @@ public class User extends AbstractEntity {
     @Column(name = "PASSWORD_EXPIRATION_TIME")
     private LocalDateTime passwordExpirationTime;
 
+    public User(
+            String email,
+            String password,
+            String secretToken,
+            String firstName,
+            String lastName,
+            UserRole role,
+            boolean emailVerified,
+            LocalDateTime passwordExpirationTime
+    ) {
+        this.email = email;
+        this.password = password;
+        this.secretToken = secretToken;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.emailVerified = emailVerified;
+        this.passwordExpirationTime = passwordExpirationTime;
+    }
+
     public User() {
     }
 

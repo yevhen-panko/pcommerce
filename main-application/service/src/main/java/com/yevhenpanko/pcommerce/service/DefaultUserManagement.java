@@ -1,6 +1,5 @@
 package com.yevhenpanko.pcommerce.service;
 
-import com.yevhenpanko.pcommerce.dto.UserRoleDTO;
 import com.yevhenpanko.pcommerce.dto.UserShortDTO;
 import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
@@ -19,34 +18,29 @@ public class DefaultUserManagement implements UserManagement {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final PermissionChecker permissionChecker;
 
     @Autowired
-    public DefaultUserManagement(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public DefaultUserManagement(
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository,
+            UserRoleRepository userRoleRepository,
+            PermissionChecker permissionChecker
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.permissionChecker = permissionChecker;
     }
-
-    @Autowired
-    private PermissionChecker permissionChecker;
 
     @Override
     public Optional<UserShortDTO> readById(long id) {
-        final Optional<User> user = userRepository.findById(id);
+        return userRepository.findById(id).map(this::toUserShortDTO);
+    }
 
-        return user.map(u -> {
-            final UserRole role = u.getRole();
-
-            return new UserShortDTO(
-                    u.getId(),
-                    u.getFirstName(),
-                    u.getLastName(),
-                    new UserRoleDTO(
-                            role.getId(),
-                            role.getName(),
-                            role.getDescription(),
-                            role.getPermissions()));
-        });
+    @Override
+    public Optional<UserShortDTO> readByEmail(String email) {
+        return userRepository.findByEmail(email).map(this::toUserShortDTO);
     }
 
     @Override

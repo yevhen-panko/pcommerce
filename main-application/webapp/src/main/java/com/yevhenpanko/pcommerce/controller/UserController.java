@@ -14,11 +14,11 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/user")
-public class UserRolesController {
+public class UserController {
     private final UserManagement userManagement;
 
     @Autowired
-    public UserRolesController(UserManagement userManagement) {
+    public UserController(UserManagement userManagement) {
         this.userManagement = userManagement;
     }
 

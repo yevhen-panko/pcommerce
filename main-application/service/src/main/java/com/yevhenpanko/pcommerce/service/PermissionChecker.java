@@ -1,7 +1,8 @@
 package com.yevhenpanko.pcommerce.service;
 
-import com.yevhenpanko.pcommerce.dto.UserShortDTO;
 import com.yevhenpanko.pcommerce.entity.user.Permission;
+import com.yevhenpanko.pcommerce.entity.user.User;
+import com.yevhenpanko.pcommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,11 @@ import java.util.Optional;
 @Service
 public class PermissionChecker {
 
-    private final DefaultUserManagement userManagement;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PermissionChecker(DefaultUserManagement userManagement) {
-        this.userManagement = userManagement;
+    public PermissionChecker(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     /**
@@ -35,9 +36,11 @@ public class PermissionChecker {
      * @return true if user has wanted permission and false otherwise.
      */
     public boolean checkIfUserHasPermission(long userId, Permission permission) {
-        final Optional<UserShortDTO> user = userManagement.readById(userId);
+        final Optional<User> user = userRepository.findById(userId);
 
-        return user.isPresent() && permission != null && user.get().getUserRole().getPermissions().contains(permission);
+        return user.isPresent()
+                && permission != null
+                && user.get().getRole().getPermissions().contains(permission);
 
     }
 }
