@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @PropertySource("classpath:/application.properties")
 public class DemoDataCreator implements ApplicationListener<ContextRefreshedEvent> {
-    private static final String ADMIN_ROLE = "admin";
+    private static final String ADMIN_ROLE = "ROLE_ADMIN";
 
     private final UserManagement userManagement;
     private final UserRoleRepository userRoleRepository;
