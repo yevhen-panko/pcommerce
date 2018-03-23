@@ -1,22 +1,17 @@
 package com.yevhenpanko.pcommerce.springconfig;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
+@Import({SecurityConfig.class, SpringJPAConfig.class})
 @ComponentScan("com.yevhenpanko.pcommerce")
-public class SpringWebConfig extends SpringJPAConfig implements WebMvcConfigurer {
-
-    @Autowired
-    public SpringWebConfig(Environment env) {
-        super(env);
-    }
+public class SpringWebConfig implements WebMvcConfigurer {
 
     @Bean
     public InternalResourceViewResolver getViewResolver() {
