@@ -27,16 +27,16 @@ import static com.yevhenpanko.pcommerce.springconfig.AbstractSpringConfig.PACKAG
 @EnableJpaRepositories(basePackages = PACKAGE_TO_SCAN + ".repository")
 @ComponentScan(PACKAGE_TO_SCAN)
 public abstract class AbstractSpringConfig {
-    private static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-    private static final String DIALECT = "hibernate.dialect";
-    private static final String SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
-    private static final String CONNECTION_URL = "hibernate.connection.url";
-    private static final String USERNAME = "hibernate.connection.username";
-    private static final String PASSWORD = "hibernate.connection.password";
-    private static final String SHOW_SQL = "hibernate.show_sql";
-    private static final String FORMAT_SQL = "hibernate.format_sql";
-    protected static final String DRIVER_CLASS = "hibernate.connection.driver_class";
-    protected static final String PACKAGE_TO_SCAN = "com.yevhenpanko.pcommerce";
+    public static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    public static final String DIALECT = "hibernate.dialect";
+    public static final String SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
+    public static final String CONNECTION_URL = "hibernate.connection.url";
+    public static final String USERNAME = "hibernate.connection.username";
+    public static final String PASSWORD = "hibernate.connection.password";
+    public static final String SHOW_SQL = "hibernate.show_sql";
+    public static final String FORMAT_SQL = "hibernate.format_sql";
+    public static final String DRIVER_CLASS = "hibernate.connection.driver_class";
+    public static final String PACKAGE_TO_SCAN = "com.yevhenpanko.pcommerce";
 
     protected abstract Database getDataBase();
 
