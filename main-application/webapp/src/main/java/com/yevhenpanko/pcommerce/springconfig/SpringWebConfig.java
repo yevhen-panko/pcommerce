@@ -17,14 +17,16 @@ public class SpringWebConfig implements WebMvcConfigurer {
     public InternalResourceViewResolver getViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/resources/pages/");
-        viewResolver.setSuffix(".html");
 
         return viewResolver;
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/").setViewName("index.html");
+        registry.addViewController("/index.html").setViewName("index.html");
+        registry.addViewController("/login").setViewName("login.html");
+        registry.addViewController("/login.html").setViewName("login.html");
     }
 
     @Override
