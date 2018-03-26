@@ -4,7 +4,7 @@ import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import com.yevhenpanko.pcommerce.repository.UserRepository;
 import com.yevhenpanko.pcommerce.repository.UserRoleRepository;
-import com.yevhenpanko.pcommerce.service.DefaultUserManagement;
+import com.yevhenpanko.pcommerce.service.UserManagement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class UserManagementTest extends AbstractTest {
     private static final Logger LOGGER = LogManager.getLogger(UserManagementTest.class);
 
     @Autowired
-    private DefaultUserManagement userManagement;
+    private UserManagement userManagement;
 
     @Autowired
     private UserRepository userRepository;
