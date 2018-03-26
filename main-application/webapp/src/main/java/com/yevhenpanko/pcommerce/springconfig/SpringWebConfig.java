@@ -34,12 +34,14 @@ public class SpringWebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler(
                         "pages/**",
-                        "js/**",
+                        "libs/**",
+                        "scripts/**",
                         "css/**"
                 )
                 .addResourceLocations(
                         "/WEB-INF/resources/pages/",
-                        "/WEB-INF/resources/js/",
+                        "/WEB-INF/resources/libs/",
+                        "/WEB-INF/resources/scripts/",
                         "/WEB-INF/resources/css/"
                 );
 
