@@ -11,9 +11,9 @@ loginApp.service('loginBack', function ($rootScope, $http) {
 
             $http.post('authenticate', userDetails)
                 .then(function (response) {
-                    console.log("Logged In Success");
+                    console.log("Logged In Success. " + response.data.value);
                 }, function (reason) {
-                    console.log("Logged In With Error");
+                    console.log("Logged In With Error. " + reason);
                 });
         }
     };
