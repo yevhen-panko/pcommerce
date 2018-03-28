@@ -39,16 +39,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
+                .antMatchers("/authenticate").permitAll()
                 .antMatchers("/pages/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/perform_login")
-                .usernameParameter("email")
-                .passwordParameter("password")
+                .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/")
-                .failureUrl("/login.html?error=true")
-                .loginPage("/login").permitAll();
+                .failureUrl("/login.html?error=true").permitAll()
+                .usernameParameter("email")
+                .passwordParameter("password");
     }
 }
