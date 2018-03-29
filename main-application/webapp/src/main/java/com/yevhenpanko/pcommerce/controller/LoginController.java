@@ -9,15 +9,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+
 import static org.springframework.security.config.BeanIds.AUTHENTICATION_MANAGER;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
+@RequestMapping("/login")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
@@ -28,7 +35,7 @@ public class LoginController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/authenticate", method = POST)
     public ResponseValue<LoginStatus> authenticate(@RequestBody UserDetails userDetails) {
         final String email = userDetails.getEmail();
         final String password = userDetails.getPassword();
@@ -46,6 +53,30 @@ public class LoginController {
 
             return new ResponseValue<>(new LoginStatus(auth.isAuthenticated(), auth.getName()));
         } catch (BadCredentialsException e) {
+            return new ResponseValue<>(new LoginStatus(false, null));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/logout", method = GET)
+    public ResponseValue<LoginStatus> logout(HttpServletRequest request, HttpServletResponse response) {
+        final SecurityContext securityContext = SecurityContextHolder.getContext();
+        final Authentication authentication = securityContext.getAuthentication();
+
+        if (authentication != null) {
+            final SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+            logoutHandler.logout(request, response, authentication);
+        }
+
+        return new ResponseValue<>(new LoginStatus(false, null));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/status", method = GET)
+    public ResponseValue<LoginStatus> getLoginStatus(Principal principal) {
+        if (principal != null) {
+            return new ResponseValue<>(new LoginStatus(true, principal.getName()));
+        } else {
             return new ResponseValue<>(new LoginStatus(false, null));
         }
     }

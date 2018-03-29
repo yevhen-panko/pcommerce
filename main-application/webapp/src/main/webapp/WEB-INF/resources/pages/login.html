@@ -6,6 +6,7 @@
           href="../css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
     <script src="../libs/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -19,8 +20,9 @@
     <script src="../scripts/login-app.js"></script>
 </head>
 <body>
-<div class="container w-25 mt-3 p-3 border border-primary rounded" ng-app="loginApp" ng-controller="loginController">
-    <form name="loginForm">
+<div class="container w-25 mt-3 p-3 border border-primary rounded" ng-app="loginApp" ng-controller="loginController"
+     ng-show="loginStatus" ng-cloak>
+    <form name="loginForm" ng-hide="loginStatus.loggedIn" ng-cloak>
         <div class="form-group">
             <label for="email">Email address</label>
             <input type="email" class="form-control" id="email" name="email"
@@ -35,6 +37,10 @@
                    placeholder="Password" ng-model="password">
         </div>
         <button type="button" class="btn btn-primary" ng-click="login()">Log In</button>
+    </form>
+    <form name="logOutForm" ng-show="loginStatus.loggedIn" ng-cloak>
+        <h4>{{loginStatus.username}}</h4>
+        <button type="button" class="btn btn-primary" ng-click="logout()">Log Out</button>
     </form>
 </div>
 </body>
