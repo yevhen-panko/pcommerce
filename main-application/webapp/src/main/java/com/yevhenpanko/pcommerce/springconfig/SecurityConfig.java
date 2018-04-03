@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -20,8 +21,14 @@ import javax.sql.DataSource;
 @ComponentScan("com.yevhenpanko.pcommerce")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final DataSource dataSource;
+    private final PersistentTokenRepository persistentTokenRepository;
+
     @Autowired
-    private DataSource dataSource;
+    public SecurityConfig(DataSource dataSource, PersistentTokenRepository persistentTokenRepository) {
+        this.dataSource = dataSource;
+        this.persistentTokenRepository = persistentTokenRepository;
+    }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -54,10 +61,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/")
-                .failureUrl("/login.html?error=true").permitAll()
-                .usernameParameter("email")
-                .passwordParameter("password");
+//                .loginPage("/login").permitAll()
+//                .defaultSuccessUrl("/")
+//                .failureUrl("/login.html?error=true").permitAll()
+//                .usernameParameter("email")
+//                .passwordParameter("password")
+                .and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository);
     }
 }

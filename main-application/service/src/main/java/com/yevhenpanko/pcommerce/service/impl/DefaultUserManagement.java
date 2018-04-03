@@ -1,10 +1,12 @@
-package com.yevhenpanko.pcommerce.service;
+package com.yevhenpanko.pcommerce.service.impl;
 
 import com.yevhenpanko.pcommerce.dto.UserShortDTO;
 import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import com.yevhenpanko.pcommerce.repository.UserRepository;
 import com.yevhenpanko.pcommerce.repository.UserRoleRepository;
+import com.yevhenpanko.pcommerce.service.PermissionChecker;
+import com.yevhenpanko.pcommerce.service.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
