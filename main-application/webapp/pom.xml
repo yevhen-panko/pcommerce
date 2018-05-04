@@ -54,16 +54,10 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>HelloWorld</finalName>
+        <finalName>main-application</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>

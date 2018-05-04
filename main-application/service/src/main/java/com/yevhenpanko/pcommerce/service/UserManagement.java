@@ -1,8 +1,6 @@
 package com.yevhenpanko.pcommerce.service;
 
-import com.yevhenpanko.pcommerce.dto.UserRoleDTO;
 import com.yevhenpanko.pcommerce.dto.UserShortDTO;
-import com.yevhenpanko.pcommerce.entity.user.User;
 import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,22 +26,4 @@ public interface UserManagement {
      */
     @Transactional
     void deleteById(long actorId, long userId);
-
-    default UserShortDTO toUserShortDTO(User user) {
-        return new UserShortDTO(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                toUserRoleDTO(user.getRole())
-        );
-    }
-
-    default UserRoleDTO toUserRoleDTO(UserRole userRole) {
-        return new UserRoleDTO(
-                userRole.getId(),
-                userRole.getName(),
-                userRole.getDescription(),
-                userRole.getPermissions()
-        );
-    }
 }

@@ -1,6 +1,7 @@
 package com.yevhenpanko.pcommerce.controller;
 
 import com.yevhenpanko.pcommerce.model.ResponseValue;
+import com.yevhenpanko.pcommerce.service.CustomPersistentTokenBasedRememberMeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,15 +30,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
+    private final RememberMeServices rememberMeServices;
 
     @Autowired
-    public LoginController(@Qualifier(AUTHENTICATION_MANAGER) AuthenticationManager authenticationManager) {
+    public LoginController(
+            @Qualifier(AUTHENTICATION_MANAGER) AuthenticationManager authenticationManager,
+            RememberMeServices rememberMeServices
+    ) {
         this.authenticationManager = authenticationManager;
+        this.rememberMeServices = rememberMeServices;
     }
 
     @ResponseBody
     @RequestMapping(value = "/authenticate", method = POST)
-    public ResponseValue<LoginStatus> authenticate(@RequestBody UserDetails userDetails) {
+    public ResponseValue<LoginStatus> authenticate(
+            @RequestBody UserDetails userDetails,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
         final String email = userDetails.getEmail();
         final String password = userDetails.getPassword();
         final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -50,6 +61,12 @@ public class LoginController {
             final Authentication auth = authenticationManager.authenticate(token);
             final SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(auth);
+
+            ((CustomPersistentTokenBasedRememberMeServices) rememberMeServices).onLoginSuccess(
+                    request,
+                    response,
+                    auth
+            );
 
             return new ResponseValue<>(new LoginStatus(auth.isAuthenticated(), auth.getName()));
         } catch (BadCredentialsException e) {

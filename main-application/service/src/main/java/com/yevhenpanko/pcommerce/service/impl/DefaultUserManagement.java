@@ -6,6 +6,7 @@ import com.yevhenpanko.pcommerce.entity.user.UserRole;
 import com.yevhenpanko.pcommerce.repository.UserRepository;
 import com.yevhenpanko.pcommerce.repository.UserRoleRepository;
 import com.yevhenpanko.pcommerce.service.PermissionChecker;
+import com.yevhenpanko.pcommerce.service.Transformer;
 import com.yevhenpanko.pcommerce.service.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,12 +38,12 @@ public class DefaultUserManagement implements UserManagement {
 
     @Override
     public Optional<UserShortDTO> readById(long id) {
-        return userRepository.findById(id).map(this::toUserShortDTO);
+        return userRepository.findById(id).map(Transformer::toUserShortDTO);
     }
 
     @Override
     public Optional<UserShortDTO> readByEmail(String email) {
-        return userRepository.findByEmail(email).map(this::toUserShortDTO);
+        return userRepository.findByEmail(email).map(Transformer::toUserShortDTO);
     }
 
     @Override
